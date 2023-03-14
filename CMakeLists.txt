@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
+include(CheckIncludeFile)
 
 # libepoxy-cmake VERSION 1.5.10-rev1
 set(EPOXY_PROJECT_NAME libepoxy)

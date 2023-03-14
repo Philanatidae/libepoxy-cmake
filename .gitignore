@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,cmake,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,cmake,macos
+test/build
+test/.cache
 
 ### CMake ###
 CMakeLists.txt.user
@@ -69,5 +69,3 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,cmake,macos
