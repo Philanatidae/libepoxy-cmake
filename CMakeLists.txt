@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 include(CheckIncludeFile)
 
-# libepoxy-cmake VERSION 1.5.10-rev1
+# libepoxy-cmake VERSION 1.5.10-rev2
 set(EPOXY_PROJECT_NAME libepoxy)
 set(EPOXY_PROJECT_VERSION 1.5.10)
 project(${EPOXY_PROJECT_NAME} VERSION ${EPOXY_PROJECT_VERSION} LANGUAGES C)
@@ -165,14 +165,15 @@ target_include_directories(epoxy
         ${LIBEPOXY_SRC_DIR}/include/epoxy
         ${LIBEPOXY_BIN_DIR}/include/epoxy
         ${LIBEPOXY_SRC_DIR}/src)
-target_sources(epoxy PUBLIC
-    ${LIBEPOXY_BIN_DIR}/include/epoxy/config.h
-    ${LIBEPOXY_SRC_DIR}/include/epoxy/common.h
-    ${LIBEPOXY_SRC_DIR}/include/epoxy/gl.h
-    ${LIBEPOXY_BIN_DIR}/include/epoxy/gl_generated.h
-    ${LIBEPOXY_SRC_DIR}/src/dispatch_common.h
-    ${LIBEPOXY_SRC_DIR}/src/dispatch_common.c
-    ${LIBEPOXY_BIN_DIR}/src/gl_generated_dispatch.c
+target_sources(epoxy
+    PRIVATE
+        ${LIBEPOXY_BIN_DIR}/include/epoxy/config.h
+        ${LIBEPOXY_SRC_DIR}/include/epoxy/common.h
+        ${LIBEPOXY_SRC_DIR}/include/epoxy/gl.h
+        ${LIBEPOXY_BIN_DIR}/include/epoxy/gl_generated.h
+        ${LIBEPOXY_SRC_DIR}/src/dispatch_common.h
+        ${LIBEPOXY_SRC_DIR}/src/dispatch_common.c
+        ${LIBEPOXY_BIN_DIR}/src/gl_generated_dispatch.c
 )
 if(EPOXY_ENABLE_EGL)
     add_custom_command(
@@ -194,11 +195,11 @@ if(EPOXY_ENABLE_EGL)
             --source
             --no-header
             --outputdir=${LIBEPOXY_BIN_DIR}/src
-            ${LIBEPOXY_BIN_DIR}/registry/egl.xml
+            ${LIBEPOXY_SRC_DIR}/registry/egl.xml
         COMMENT "Generating `egl_generated_dispatch.c`"
     )
 
-    target_sources(epoxy PUBLIC
+    target_sources(epoxy PRIVATE
         ${LIBEPOXY_SRC_DIR}/include/epoxy/egl.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/egl_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_egl.c
@@ -229,7 +230,7 @@ if(EPOXY_ENABLE_GLX)
         COMMENT "Generating `glx_generated_dispatch.c`"
     )
 
-    target_sources(epoxy PUBLIC
+target_sources(epoxy PRIVATE
         ${LIBEPOXY_SRC_DIR}/include/epoxy/glx.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/glx_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_glx.c
@@ -256,11 +257,11 @@ if(EPOXY_ENABLE_WGL)
             --source
             --no-header
             --outputdir=${LIBEPOXY_SRC_DIR}/src
-            ${LIBEPOXY_BIN_DIR}/registry/wgl.xml
+            ${LIBEPOXY_SRC_DIR}/registry/wgl.xml
         COMMENT "Generating `wgl_generated_dispatch.c`"
     )
 
-    target_sources(epoxy PUBLIC
+    target_sources(epoxy PRIVATE
         ${LIBEPOXY_SRC_DIR}/include/epoxy/wgl.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/wgl_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_wgl.c
