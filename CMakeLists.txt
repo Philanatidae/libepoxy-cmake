@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 include(CheckIncludeFile)
 
-# libepoxy-cmake VERSION 1.5.10-rev2
+# libepoxy-cmake VERSION 1.5.10-rev3
 set(EPOXY_PROJECT_NAME libepoxy)
 set(EPOXY_PROJECT_VERSION 1.5.10)
 project(${EPOXY_PROJECT_NAME} VERSION ${EPOXY_PROJECT_VERSION} LANGUAGES C)
@@ -63,12 +63,12 @@ if(BUILD_SHARED_LIBS)
         target_compile_definitions(epoxy PRIVATE
             "EPOXY_PUBLIC=__attribute__((visibility(\"default\"))) extern"
         )
+        target_compile_options(epoxy PRIVATE    
+            -fvisibility=hidden
+        )
     endif()
 else()
     add_library(epoxy STATIC)
-    target_compile_options(epoxy PRIVATE    
-        -fvisibility=hidden
-    )
 endif()
 
 # The inline keyword is only available for C++ in MSVC.
@@ -166,7 +166,7 @@ target_include_directories(epoxy
         ${LIBEPOXY_BIN_DIR}/include/epoxy
         ${LIBEPOXY_SRC_DIR}/src)
 target_sources(epoxy
-    PRIVATE
+    PUBLIC
         ${LIBEPOXY_BIN_DIR}/include/epoxy/config.h
         ${LIBEPOXY_SRC_DIR}/include/epoxy/common.h
         ${LIBEPOXY_SRC_DIR}/include/epoxy/gl.h
@@ -199,7 +199,7 @@ if(EPOXY_ENABLE_EGL)
         COMMENT "Generating `egl_generated_dispatch.c`"
     )
 
-    target_sources(epoxy PRIVATE
+    target_sources(epoxy PUBLIC
         ${LIBEPOXY_SRC_DIR}/include/epoxy/egl.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/egl_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_egl.c
@@ -230,7 +230,7 @@ if(EPOXY_ENABLE_GLX)
         COMMENT "Generating `glx_generated_dispatch.c`"
     )
 
-target_sources(epoxy PRIVATE
+target_sources(epoxy PUBLIC
         ${LIBEPOXY_SRC_DIR}/include/epoxy/glx.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/glx_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_glx.c
@@ -256,12 +256,12 @@ if(EPOXY_ENABLE_WGL)
             ${LIBEPOXY_SRC_DIR}/src/gen_dispatch.py
             --source
             --no-header
-            --outputdir=${LIBEPOXY_SRC_DIR}/src
+            --outputdir=${LIBEPOXY_BIN_DIR}/src
             ${LIBEPOXY_SRC_DIR}/registry/wgl.xml
         COMMENT "Generating `wgl_generated_dispatch.c`"
     )
 
-    target_sources(epoxy PRIVATE
+    target_sources(epoxy PUBLIC
         ${LIBEPOXY_SRC_DIR}/include/epoxy/wgl.h
         ${LIBEPOXY_BIN_DIR}/include/epoxy/wgl_generated.h
         ${LIBEPOXY_SRC_DIR}/src/dispatch_wgl.c
