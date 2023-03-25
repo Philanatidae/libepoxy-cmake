@@ -2,7 +2,7 @@
 
 libepoxy-cmake provides a CMakeLists.txt for [libepoxy](https://github.com/anholt/libepoxy). This project is intended to be used with `add_subdirectory`. As such, install targets for libepoxy-cmake are disabled; if you need to install libepoxy to the system, clone the original and build/install libepoxy using Meson.
 
-The current version of libepoxy-cmake is `rev3-SNAPSHOT` compiling `libepoxy-1.5.10`. Releases can be found in the `release` branch.
+The current version of libepoxy-cmake is `rev3` compiling `libepoxy-1.5.10`. Releases can be found in the `release` branch.
 
 ## Motivation
 
