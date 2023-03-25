@@ -38,13 +38,13 @@ Note that some platforms may need additional configuration. See the [Configurati
 | Platform    | Confirmed Working |
 |-------------|-------------------|
 | macOS       | Yes               |
-| Windows     | No                |
+| Windows     | Yes               |
 | Linux (X11) | No                |
 | Android     | Yes               |
 
 ## To Do
  - Warning flags are not quite worked out; building with libepoxy-cmake prints warnings that don't print when building libepoxy with Meson
- - Windows, Android, and Linux need to be tested
+ - Linux needs to be tested
 
 ## License
 
