@@ -125,7 +125,7 @@ if(NOT EXISTS ${LIBEPOXY_BIN_DIR}/include/epoxy)
     file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/include/epoxy)
 endif()
 if(NOT EXISTS ${LIBEPOXY_BIN_DIR}/src)
-    file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/include/epoxy)
+    file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/src)
 endif()
 
 add_custom_command(
