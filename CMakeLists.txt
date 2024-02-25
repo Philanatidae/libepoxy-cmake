@@ -1,13 +1,52 @@
 cmake_minimum_required(VERSION 3.20)
 include(CheckIncludeFile)
 
-# libepoxy-cmake VERSION 1.5.10-rev3
+# # Changing libepoxy version/repository
+# By default, libepoxy-cmake will download the latest release of
+# libepoxy via FetchContent. You can overwrite the version
+# downloaded or point to a fork by setting all of the following
+# options, useful if you want an older version or have a fork:
+# 
+# EPOXY_PROJECT_TAG ~ Set to the tag/commit of libepoxy you are
+#       using (e.g. 1.5.10)
+# EPOXY_PROJECT_VERSION ~ Set to the version of libepoxy you are
+#       using (e.g. 1.5.10)
+# EPOXY_CLONE_FROM_REPO ~ If TRUE, libepoxy-cmake will clone libepoxy
+#       from EPOXY_REPOSITORY and checkout to EPOXY_PROJECT_TAG
+# EPOXY_REPOSITORY ~ URL to git repository of libepoxy. Used when
+#       EPOXY_CLONE_FROM_REPO is TRUE.
+# EPOXY_LOCAL_DIR ~ Path to local directory of libepoxy. Used when
+#       EPOXY_CLONE_FROM_REPO is FALSE.
+
+set(EPOXY_PROJECT_VERSION 1.5.10 CACHE STRING "Version of libepoxy being used")
+set(EPOXY_PROJECT_TAG ${EPOXY_PROJECT_VERSION} CACHE STRING "Version of libepoxy being used")
+option(EPOXY_CLONE_FROM_REPO "Version of libepoxy being used" TRUE)
+set(EPOXY_REPOSITORY "https://github.com/anholt/libepoxy" CACHE STRING "Repository to download libepoxy from")
+set(EPOXY_LOCAL_DIR "" CACHE STRING "Local path to libepoxy")
+
+# libepoxy-cmake VERSION 1.5.10-rev4
 set(EPOXY_PROJECT_NAME libepoxy)
-set(EPOXY_PROJECT_VERSION 1.5.10)
 project(${EPOXY_PROJECT_NAME} VERSION ${EPOXY_PROJECT_VERSION} LANGUAGES C)
+
+if(${EPOXY_CLONE_FROM_REPO})
+    include(FetchContent)
+    FetchContent_Declare(epoxy_content
+        GIT_REPOSITORY ${EPOXY_REPOSITORY}
+        GIT_TAG ${EPOXY_PROJECT_TAG}
+    )
+    FetchContent_GetProperties(epoxy_content)
+    if(NOT epoxy_content_POPULATED)
+        FetchContent_Populate(epoxy_content)
+    endif()
+
+    set(LIBEPOXY_SRC_DIR ${epoxy_content_SOURCE_DIR})
+    set(LIBEPOXY_BIN_DIR ${epoxy_content_BINARY_DIR})
+else()
+    set(LIBEPOXY_SRC_DIR ${EPOXY_LOCAL_DIR})
+    set(LIBEPOXY_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/libepoxy)
+endif()
+
 set(CMAKE_SKIP_INSTALL_RULES YES)
-set(LIBEPOXY_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libepoxy)
-set(LIBEPOXY_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/libepoxy)
 
 # meson.build
 set(PACKAGE_NAME ${EPOXY_PROJECT_NAME})
@@ -125,7 +164,7 @@ if(NOT EXISTS ${LIBEPOXY_BIN_DIR}/include/epoxy)
     file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/include/epoxy)
 endif()
 if(NOT EXISTS ${LIBEPOXY_BIN_DIR}/src)
-    file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/include/epoxy)
+    file(MAKE_DIRECTORY ${LIBEPOXY_BIN_DIR}/src)
 endif()
 
 add_custom_command(

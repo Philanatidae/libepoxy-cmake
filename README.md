@@ -2,7 +2,7 @@
 
 libepoxy-cmake provides a CMakeLists.txt for [libepoxy](https://github.com/anholt/libepoxy). This project is intended to be used with `add_subdirectory`. As such, install targets for libepoxy-cmake are disabled; if you need to install libepoxy to the system, clone the original and build/install libepoxy using Meson.
 
-The current version of libepoxy-cmake is `rev3` compiling `libepoxy-1.5.10`. Releases can be found in the `release` branch.
+The current version of libepoxy-cmake is `rev4` compiling `libepoxy-1.5.10` officially. Releases can be found in the `release` branch. Older versions of libepoxy may compile, but have not been tested.
 
 ## Motivation
 
@@ -25,6 +25,13 @@ set(EPOXY_ENABLE_X11 OFF)
 
 add_subdirectory(libepoxy-cmake)
 ```
+
+By default, libepoxy-cmake downloads libepoxy 1.5.10 at configure time via `FetchContent`. The following options can be used to change where libepoxy is downloaded from (e.g. a custom fork). An older version of libepoxy can be pointed to, but is not tested to work unless it is 1.5.10.
+ - `EPOXY_PROJECT_TAG`, set to the tag/commit of libepoxy you are using, defaults to 1.5.10
+ - `EPOXY_PROJECT_VERSION`, set to the version of libepoxy you are using, defaults to 1.5.10)
+ - `EPOXY_CLONE_FROM_REPO`, set to TRUE/FALSE if libepoxy-cmake will clone libepoxy from `EPOXY_REPOSITORY` and checkout to `EPOXY_PROJECT_TAG`, defaults to TRUE
+ - `EPOXY_REPOSITORY`, set to URL of git repository of libepoxy (used when `EPOXY_CLONE_FROM_REPO` is TRUE), defaults to "https://github.com/anholt/libepoxy"
+ - `EPOXY_LOCAL_DIR`, set to path of a local directory of libepoxy (used when`EPOXY_CLONE_FROM_REPO` is FALSE), defaults to "" 
 
 ### Configuring for Android
 
