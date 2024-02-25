@@ -24,7 +24,7 @@ option(EPOXY_CLONE_FROM_REPO "Version of libepoxy being used" TRUE)
 set(EPOXY_REPOSITORY "https://github.com/anholt/libepoxy" CACHE STRING "Repository to download libepoxy from")
 set(EPOXY_LOCAL_DIR "" CACHE STRING "Local path to libepoxy")
 
-# libepoxy-cmake VERSION 1.5.10-rev4
+# libepoxy-cmake VERSION 1.5.10-rev5-SNAPSHOT
 set(EPOXY_PROJECT_NAME libepoxy)
 project(${EPOXY_PROJECT_NAME} VERSION ${EPOXY_PROJECT_VERSION} LANGUAGES C)
 
